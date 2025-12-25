@@ -47,6 +47,6 @@ Be concise, practical, and provide code examples when helpful. Use markdown form
             return f"I apologize, but I encountered an error processing your request. Please try again. Error: {str(e)}"
     
     def clear_session(self, session_id: str):
-        \"\"\"Clear a chat session from memory\"\"\"
+        """Clear a chat session from memory"""
         if session_id in self.chat_instances:
             del self.chat_instances[session_id]
