@@ -5,7 +5,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Code2, Mail, Lock, User, ArrowLeft } from 'lucide-react';
-import { toast } from './ui/use-toast';
+import { toast } from '../hooks/use-toast';
 
 const Auth = ({ mode = 'login' }) => {
   const navigate = useNavigate();
