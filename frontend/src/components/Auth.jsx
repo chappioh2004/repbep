@@ -6,9 +6,11 @@ import { Label } from './ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Code2, Mail, Lock, User, ArrowLeft } from 'lucide-react';
 import { toast } from '../hooks/use-toast';
+import { useAuth } from '../contexts/AuthContext';
 
 const Auth = ({ mode = 'login' }) => {
   const navigate = useNavigate();
+  const { login, register } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -20,16 +22,30 @@ const Auth = ({ mode = 'login' }) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      localStorage.setItem('repbep_auth', JSON.stringify({ authenticated: true }));
-      toast({
-        title: mode === 'login' ? 'Welcome back!' : 'Account created!',
-        description: mode === 'login' ? 'You have successfully logged in.' : 'Your account has been created successfully.'
-      });
+    try {
+      if (mode === 'login') {
+        await login({ email: formData.email, password: formData.password });
+        toast({
+          title: 'Welcome back!',
+          description: 'You have successfully logged in.'
+        });
+      } else {
+        await register(formData);
+        toast({
+          title: 'Account created!',
+          description: 'Your account has been created successfully.'
+        });
+      }
       navigate('/dashboard');
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'An error occurred. Please try again.',
+        variant: 'destructive'
+      });
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   const handleChange = (e) => {
