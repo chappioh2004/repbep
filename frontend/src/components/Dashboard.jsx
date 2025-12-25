@@ -115,7 +115,7 @@ const Dashboard = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {mockProjects.slice(0, 3).map((project) => (
+                {projects.map((project) => (
                   <Link key={project.id} to="/projects">
                     <div className="p-3 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-colors cursor-pointer border border-gray-700 hover:border-emerald-500/50">
                       <div className="flex items-start justify-between mb-2">
