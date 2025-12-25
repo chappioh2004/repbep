@@ -52,48 +52,6 @@ const Projects = () => {
     }
   };
 
-const Projects = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    loadProjects();
-  }, []);
-
-  const loadProjects = async () => {
-    try {
-      const data = await projectsAPI.getAll();
-      setProjects(data);
-    } catch (error) {
-      console.error('Failed to load projects:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load projects',
-        variant: 'destructive'
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async (projectId) => {
-    try {
-      await projectsAPI.delete(projectId);
-      setProjects(projects.filter(p => p.id !== projectId));
-      toast({
-        title: 'Success',
-        description: 'Project deleted successfully'
-      });
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to delete project',
-        variant: 'destructive'
-      });
-    }
-  };
-
   const filteredProjects = projects.filter(project => 
     project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     project.description.toLowerCase().includes(searchQuery.toLowerCase())
