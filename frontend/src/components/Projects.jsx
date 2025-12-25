@@ -1,13 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Plus, Search, MoreVertical, FolderOpen, Calendar, Clock, Trash2, ExternalLink, FileCode } from 'lucide-react';
-import { mockProjects } from '../mock';
+import { projectsAPI } from '../services/api';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
+import { toast } from '../hooks/use-toast';
+
+const Projects = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  const loadProjects = async () => {
+    try {
+      const data = await projectsAPI.getAll();
+      setProjects(data);
+    } catch (error) {
+      console.error('Failed to load projects:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load projects',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (projectId) => {
+    try {
+      await projectsAPI.delete(projectId);
+      setProjects(projects.filter(p => p.id !== projectId));
+      toast({
+        title: 'Success',
+        description: 'Project deleted successfully'
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to delete project',
+        variant: 'destructive'
+      });
+    }
+  };
 
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState('');
