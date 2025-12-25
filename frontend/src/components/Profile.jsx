@@ -9,12 +9,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Badge } from './ui/badge';
 import { Switch } from './ui/switch';
 import { Camera, Github, Twitter, Linkedin, Save, CheckCircle2 } from 'lucide-react';
-import { mockUser } from '../mock';
+import { useAuth } from '../contexts/AuthContext';
+import { profileAPI } from '../services/api';
 import Navbar from './Navbar';
 import { toast } from '../hooks/use-toast';
 
 const Profile = () => {
-  const [profile, setProfile] = useState(mockUser);
+  const { user, updateUser } = useAuth();
+  const [profile, setProfile] = useState(user || {});
   const [saved, setSaved] = useState(false);
 
   const colorSchemes = [
