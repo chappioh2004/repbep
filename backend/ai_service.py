@@ -19,7 +19,7 @@ Be concise, practical, and provide code examples when helpful. Use markdown form
         self.chat_instances = {}
     
     async def chat(self, session_id: str, message: str) -> str:
-        \"\"\"Send a message to Claude and get a response\"\"\"
+        """Send a message to Claude and get a response"""
         try:
             # Create new chat instance if doesn't exist
             if session_id not in self.chat_instances:
