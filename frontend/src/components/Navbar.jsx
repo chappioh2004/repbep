@@ -50,15 +50,15 @@ const Navbar = ({ isAuthenticated = false }) => {
                   <DropdownMenuTrigger asChild>
                     <button className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
                       <Avatar className="w-8 h-8 border-2 border-emerald-500">
-                        <AvatarImage src={mockUser.avatar} alt={mockUser.displayName} />
-                        <AvatarFallback>{mockUser.displayName.charAt(0)}</AvatarFallback>
+                        <AvatarImage src={user?.avatar} alt={user?.displayName} />
+                        <AvatarFallback>{user?.displayName?.charAt(0)}</AvatarFallback>
                       </Avatar>
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
                     <div className="px-2 py-1.5">
-                      <p className="text-sm font-medium">{mockUser.displayName}</p>
-                      <p className="text-xs text-gray-400">{mockUser.email}</p>
+                      <p className="text-sm font-medium">{user?.displayName}</p>
+                      <p className="text-xs text-gray-400">{user?.email}</p>
                     </div>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => navigate('/profile')}>
