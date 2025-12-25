@@ -223,8 +223,8 @@ const Dashboard = () => {
                         </div>
                         {message.role === 'user' && (
                           <Avatar className="w-8 h-8 border-2 border-emerald-500">
-                            <AvatarImage src={mockUser.avatar} alt={mockUser.displayName} />
-                            <AvatarFallback>{mockUser.displayName.charAt(0)}</AvatarFallback>
+                            <AvatarImage src={user?.avatar} alt={user?.displayName} />
+                            <AvatarFallback>{user?.displayName?.charAt(0)}</AvatarFallback>
                           </Avatar>
                         )}
                       </div>
