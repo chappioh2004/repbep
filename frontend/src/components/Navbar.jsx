@@ -4,15 +4,16 @@ import { Button } from './ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Code2, LogOut, Settings, User } from 'lucide-react';
-import { mockUser } from '../mock';
+import { useAuth } from '../contexts/AuthContext';
 
 const Navbar = ({ isAuthenticated = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuth();
   const isLanding = location.pathname === '/';
 
   const handleLogout = () => {
-    localStorage.removeItem('repbep_auth');
+    logout();
     navigate('/');
   };
 
