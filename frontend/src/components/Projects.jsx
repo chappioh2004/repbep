@@ -180,7 +180,7 @@ const Projects = () => {
                         <FileCode className="w-4 h-4 mr-2" />
                         View Code
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-400">
+                      <DropdownMenuItem className="text-red-400" onClick={() => handleDelete(project.id)}>
                         <Trash2 className="w-4 h-4 mr-2" />
                         Delete
                       </DropdownMenuItem>
