@@ -6,15 +6,24 @@ import { Badge } from './ui/badge';
 import { ScrollArea } from './ui/scroll-area';
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
 import { Send, Sparkles, Code2, Rocket } from 'lucide-react';
-import { mockUser, mockProjects, mockConversations } from '../mock';
+import { useAuth } from '../contexts/AuthContext';
+import { projectsAPI, chatAPI } from '../services/api';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
-  const [messages, setMessages] = useState(mockConversations[0]?.messages || []);
+  const { user } = useAuth();
+  const [projects, setProjects] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationId, setConversationId] = useState(null);
   const scrollRef = useRef(null);
+
+  useEffect(() => {
+    loadProjects();
+    loadConversations();
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -22,7 +31,29 @@ const Dashboard = () => {
     }
   }, [messages]);
 
-  const handleSend = () => {
+  const loadProjects = async () => {
+    try {
+      const data = await projectsAPI.getAll();
+      setProjects(data.slice(0, 3));
+    } catch (error) {
+      console.error('Failed to load projects:', error);
+    }
+  };
+
+  const loadConversations = async () => {
+    try {
+      const conversations = await chatAPI.getConversations();
+      if (conversations.length > 0) {
+        const latestConv = conversations[0];
+        setConversationId(latestConv.id);
+        setMessages(latestConv.messages);
+      }
+    } catch (error) {
+      console.error('Failed to load conversations:', error);
+    }
+  };
+
+  const handleSend = async () => {
     if (!input.trim()) return;
 
     const userMessage = {
@@ -36,17 +67,29 @@ const Dashboard = () => {
     setInput('');
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const aiMessage = {
+    try {
+      const response = await chatAPI.sendMessage({
+        message: input,
+        conversationId: conversationId
+      });
+      
+      if (!conversationId) {
+        setConversationId(response.conversationId);
+      }
+
+      setMessages(prev => [...prev, response.message]);
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      const errorMessage = {
         id: `m${Date.now()}`,
         role: 'assistant',
-        content: `I'll help you with "${input}". Let me analyze your request and provide a solution. This is a mock response - once you integrate a real AI model, I'll provide actual intelligent responses based on your prompts.`,
+        content: 'I apologize, but I encountered an error. Please try again.',
         timestamp: new Date().toISOString()
       };
-      setMessages(prev => [...prev, aiMessage]);
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const handleKeyPress = (e) => {
