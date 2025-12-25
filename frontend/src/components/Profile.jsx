@@ -27,14 +27,23 @@ const Profile = () => {
     { name: 'Orange', value: 'orange', color: 'bg-orange-500' }
   ];
 
-  const handleSave = () => {
-    // Simulate save
-    setSaved(true);
-    toast({
-      title: 'Profile Updated',
-      description: 'Your changes have been saved successfully.'
-    });
-    setTimeout(() => setSaved(false), 2000);
+  const handleSave = async () => {
+    try {
+      const updatedUser = await profileAPI.update(profile);
+      updateUser(updatedUser);
+      setSaved(true);
+      toast({
+        title: 'Profile Updated',
+        description: 'Your changes have been saved successfully.'
+      });
+      setTimeout(() => setSaved(false), 2000);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to save changes. Please try again.',
+        variant: 'destructive'
+      });
+    }
   };
 
   const handleChange = (field, value) => {
