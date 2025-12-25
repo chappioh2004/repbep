@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
-import { ArrowRight, CheckCircle2, Zap, Code, Layers, Rocket, Users, Shield, Star } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Zap, Code, Layers, Rocket, Users, Shield, Star, Code2 } from 'lucide-react';
 import { mockFeatures, mockPricingPlans, mockTestimonials } from '../mock';
 import Navbar from './Navbar';
 
